@@ -78,7 +78,7 @@ static iToastSettings *sharedSettings = nil;
                                                context:nil];
     CGSize textSize = rect.size;
 	
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, textSize.width + kComponentPadding, textSize.height + kComponentPadding)];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(theSettings.horizontalPadding, theSettings.verticalPadding, textSize.width, textSize.height)];
 	label.backgroundColor = [UIColor clearColor];
 	label.textColor = [UIColor whiteColor];
 	label.font = font;
@@ -96,22 +96,22 @@ static iToastSettings *sharedSettings = nil;
         switch ([theSettings imageLocation]) {
             case iToastImageLocationLeft:
                 [label setTextAlignment:NSTextAlignmentLeft];
-                label.center = CGPointMake(image.size.width + kComponentPadding * 2 
-                                           + (v.frame.size.width - image.size.width - kComponentPadding * 2) / 2, 
+                label.center = CGPointMake(image.size.width + theSettings.horizontalPadding * 2 
+                                           + (v.frame.size.width - image.size.width - theSettings.horizontalPadding * 2) / 2, 
                                            v.frame.size.height / 2);
                 break;
             case iToastImageLocationTop:
                 [label setTextAlignment:NSTextAlignmentCenter];
                 label.center = CGPointMake(v.frame.size.width / 2, 
-                                           (image.size.height + kComponentPadding * 2 
-                                            + (v.frame.size.height - image.size.height - kComponentPadding * 2) / 2));
+                                           (image.size.height + theSettings.verticalPadding * 2 
+                                            + (v.frame.size.height - image.size.height - theSettings.verticalPadding * 2) / 2));
                 break;
             default:
                 break;
         }
 		
 	} else {
-		v.frame = CGRectMake(0, 0, textSize.width + kComponentPadding * 2, textSize.height + kComponentPadding * 2);
+		v.frame = CGRectMake(0, 0, textSize.width + theSettings.horizontalPadding * 2, textSize.height + theSettings.verticalPadding * 2);
 		label.center = CGPointMake(v.frame.size.width / 2, v.frame.size.height / 2);
 	}
 	CGRect lbfrm = label.frame;
@@ -119,13 +119,13 @@ static iToastSettings *sharedSettings = nil;
 	lbfrm.origin.y = ceil(lbfrm.origin.y);
 	label.frame = lbfrm;
 	[v addSubview:label];
-	[label release];
+//	[label release];
 	
 	if (image) {
 		UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
 		imageView.frame = [self _frameForImage:type inToastFrame:v.frame];
 		[v addSubview:imageView];
-		[imageView release];
+//		[imageView release];
 	}
 	
 	v.backgroundColor = [UIColor colorWithRed:theSettings.bgRed green:theSettings.bgGreen blue:theSettings.bgBlue alpha:theSettings.bgAlpha];
@@ -235,7 +235,8 @@ static iToastSettings *sharedSettings = nil;
 	v.alpha = 1;
 	[UIView commitAnimations];
 	
-	view = [v retain];
+	//view = [v retain];
+	view = v;
 	
 	[v addTarget:self action:@selector(hideToast:) forControlEvents:UIControlEventTouchDown];
 }
@@ -300,7 +301,7 @@ static iToastSettings *sharedSettings = nil;
 
 
 + (iToast *) makeText:(NSString *) _text{
-	iToast *toast = [[[iToast alloc] initWithText:_text] autorelease];
+	iToast *toast = [[iToast alloc] initWithText:_text];//autorelease];
 	
 	return toast;
 }
@@ -393,6 +394,8 @@ static iToastSettings *sharedSettings = nil;
 @synthesize bgAlpha;
 @synthesize images;
 @synthesize imageLocation;
+@synthesize verticalPadding;
+@synthesize horizontalPadding;
 
 - (void) setImage:(UIImage *) img withLocation:(iToastImageLocation)location forType:(iToastType) type {
 	if (type == iToastTypeNone) {
@@ -431,6 +434,8 @@ static iToastSettings *sharedSettings = nil;
 		sharedSettings.bgAlpha = 0.7;
 		sharedSettings.offsetLeft = 0;
 		sharedSettings.offsetTop = 0;
+		sharedSettings.verticalPadding = 10;
+		sharedSettings.horizontalPadding = 8;
 	}
 	
 	return sharedSettings;
@@ -451,6 +456,8 @@ static iToastSettings *sharedSettings = nil;
 	copy.bgAlpha = self.bgAlpha;
 	copy.offsetLeft = self.offsetLeft;
 	copy.offsetTop = self.offsetTop;
+    copy.verticalPadding = self.verticalPadding;
+    copy.horizontalPadding = self.horizontalPadding;
 	
 	NSArray *keys = [self.images allKeys];
 	

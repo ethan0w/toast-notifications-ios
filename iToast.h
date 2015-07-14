@@ -107,6 +107,9 @@ typedef enum {
 	NSDictionary *images;
 	
 	BOOL positionIsSet;
+
+	CGFloat verticalPadding;
+	CGFloat horizontalPadding;
 }
 
 
@@ -124,6 +127,8 @@ typedef enum {
 @property(assign) NSInteger offsetTop;
 @property(readonly) NSDictionary *images;
 @property(assign) iToastImageLocation imageLocation;
+@property(assign) CGFloat verticalPadding;
+@property(assign) CGFloat horizontalPadding;
 
 
 - (void) setImage:(UIImage *)img forType:(iToastType) type;
