@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   s.homepage     = 'https://github.com/ecstasy2/toast-notifications-ios'
   s.license      = { :type => 'MIT', :file => 'LICENSE.txt' }
   s.author       = 'DIALLO Mamadou Bobo'
-  s.source       = { :git => 'https://github.com/ecstasy2/toast-notifications-ios.git' ,:commit => '68ea9a1'}
+  s.source       = { :git => 'https://github.com/ethan0w/toast-notifications-ios.git' ,:tag => '1.0.1'}
   s.source_files = '*.{h,m}'
   s.framework    = 'QuartzCore'
   s.requires_arc = true
